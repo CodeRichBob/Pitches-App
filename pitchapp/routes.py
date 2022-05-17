@@ -12,12 +12,13 @@ from flask_login import login_user, current_user, logout_user, login_required
 @app.route("/home")
 def main():
     posts = Post.query.all()
-    return render_template('main.html')
+    return render_template('main.html', posts=posts)
 
 
 @app.route("/about")
 def about():
-    return render_template ('about.html', title = 'About')
+    return render_template('about.html', title='About')
+
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -33,7 +34,8 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
-@app.route("/login", methods=['GET','POST'])
+
+@app.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('main'))
@@ -41,13 +43,12 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, remember = form.remember.data)
+            login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('main'))
         else:
-            flash('Login unsuccessful, Please check email and password', 'danger')
-    return render_template ('login.html', title = 'Login', form=form)
-
+            flash('Login Unsuccessful. Please check email and password', 'danger')
+    return render_template('login.html', title='Login', form=form)
 
 
 @app.route("/logout")
@@ -89,6 +90,7 @@ def account():
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('account.html', title='Account',
                            image_file=image_file, form=form)
+
 
 @app.route("/post/new", methods=['GET', 'POST'])
 @login_required
