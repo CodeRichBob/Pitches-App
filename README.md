@@ -33,7 +33,7 @@ Open the application on your browser 127.0.0.1:5000.
 
 ## Known Bugs
 
-- Functionality did not work as expected
+- Some functionalities eg 'like comment' did not work as expected but can be improved.
 
 ## Contact Information
 
