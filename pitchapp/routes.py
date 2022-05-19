@@ -142,3 +142,18 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('main'))
+
+@app.route('/post/<int:post_id>/comment',methods=['GET', 'POST'])
+@login_required
+def comment_post(post_id):
+    
+    form = CommentForm()
+    
+    if form.validate_on_submit():
+        comment = Comment(userdata=form.userdata.data)
+        post_id= Comment(post_id=post_id)
+        db.session.add(comment,post_id)
+        db.session.commit()
+        flash('Comment added!', 'success')
+        return redirect(url_for('index'))
+    return render_template('comment.html', title='New comment', form=form, legend='Add a comment')

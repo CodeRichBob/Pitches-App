@@ -29,3 +29,8 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    userdata = db.Column(db.Text, nullable=False )
+    post_id = db.Column(db.Integer, db.ForeignKey('pitch.id'), nullable=True)
